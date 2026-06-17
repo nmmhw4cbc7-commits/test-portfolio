@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Philipp Dachtler | AI Engineer & Full-Stack Developer</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#050508',
+                        accentPurp: '#A855F7',
+                        accentPink: '#F0ABFC',
+                    },
+                    fontFamily: {
+                        mono: ['Courier New', 'Courier', 'monospace'],
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Custom CSS for custom glows and custom scrollbars -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #050508;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050508;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3b0764;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a855f7;
+        }
+        /* Glow effects */
+        .purple-glow {
+            box-shadow: 0 0 40px 10px rgba(168, 85, 247, 0.15);
+        }
+        .text-glow {
+            text-shadow: 0 0 20px rgba(240, 171, 252, 0.4);
+        }
+    </style>
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Three.js for 3D engine -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- GSAP & ScrollTrigger for premium animations and scroll camera control -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+</head>
+<body class="relative min-h-screen selection:bg-purple-900 selection:text-white">
+
+    <!-- Global Background Glows -->
+    <div class="fixed top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-purple-900/10 blur-[120px] pointer-events-none z-0"></div>
+    <div class="fixed bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] rounded-full bg-fuchsia-900/10 blur-[150px] pointer-events-none z-0"></div>
+
+    <!-- Minimalist Navbar -->
+    <nav class="fixed top-0 left-0 w-full z-50 px-6 md:px-12 py-6 flex justify-between items-center bg-darkBg/30 backdrop-blur-md border-b border-white/5">
+        <a href="#" class="text-xl font-extrabold tracking-wider text-white hover:text-accentPurp transition-colors duration-300">
+            PD<span class="text-accentPurp">.</span>
+        </a>
+        <div class="hidden md:block text-sm text-gray-400 font-mono tracking-widest hover:text-white transition-colors duration-300">
+            <i class="fa-regular fa-envelope text-accentPurp mr-2"></i>hello@philippdachtler.com
+        </div>
+        <div class="flex space-x-8 text-xs font-mono tracking-widest text-gray-400">
+            <a href="#about" class="hover:text-white transition-colors py-1 relative group">
+                ABOUT
+                <span class="absolute bottom-0 left-0 w-0 h-[1px] bg-accentPurp transition-all duration-300 group-hover:w-full"></span>
+            </a>
+            <a href="#work" class="hover:text-white transition-colors py-1 relative group">
+                WORK
+                <span class="absolute bottom-0 left-0 w-0 h-[1px] bg-accentPurp transition-all duration-300 group-hover:w-full"></span>
+            </a>
+            <a href="#contact" class="hover:text-white transition-colors py-1 relative group">
+                CONTACT
+                <span class="absolute bottom-0 left-0 w-0 h-[1px] bg-accentPurp transition-all duration-300 group-hover:w-full"></span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Social Bar Left (Sticky on Desktop) -->
+    <div class="fixed bottom-12 left-6 md:left-10 z-40 hidden sm:flex flex-col items-center space-y-6">
+        <div class="w-[1px] h-20 bg-gradient-to-t from-accentPurp to-transparent"></div>
+        <a href="https://github.com" target="_blank" class="text-gray-400 hover:text-accentPurp hover:scale-115 transition-all duration-300" title="GitHub">
+            <i class="fa-brands fa-github text-xl"></i>
+        </a>
+        <a href="https://linkedin.com" target="_blank" class="text-gray-400 hover:text-accentPurp hover:scale-115 transition-all duration-300" title="LinkedIn">
+            <i class="fa-brands fa-linkedin-in text-xl"></i>
+        </a>
+        <a href="https://twitter.com" target="_blank" class="text-gray-400 hover:text-accentPurp hover:scale-115 transition-all duration-300" title="X (Twitter)">
+            <i class="fa-brands fa-x-twitter text-xl"></i>
+        </a>
+        <a href="https://instagram.com" target="_blank" class="text-gray-400 hover:text-accentPurp hover:scale-115 transition-all duration-300" title="Instagram">
+            <i class="fa-brands fa-instagram text-xl"></i>
+        </a>
+        <span class="text-[10px] font-mono tracking-widest text-gray-500 uppercase origin-left rotate-90 translate-y-12">CONNECT</span>
+    </div>
+
+    <!-- Hero Content & 3D Canvas Layout -->
+    <main class="relative z-10">
+        
+        <!-- Sticky 3D WebGL Canvas Container -->
+        <div class="fixed top-0 left-0 w-full h-screen z-20 pointer-events-none md:pointer-events-auto">
+            <canvas id="canvas3d" class="w-full h-full block"></canvas>
+            <!-- Cursor Instruction Overlay -->
+            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce pointer-events-none text-gray-500 font-mono text-[10px] tracking-widest">
+                <span>SCROLL TO EXPLORE THE WORKSPACE</span>
+                <i class="fa-solid fa-chevron-down mt-2 text-accentPurp"></i>
+            </div>
+        </div>
+
+        <!-- Section 1: Hero (Intro) -->
+        <section id="hero" class="relative min-h-screen flex items-center justify-between px-6 md:px-20 lg:px-32 z-30 pointer-events-none">
+            <!-- Left Text Block -->
+            <div class="w-full md:w-1/2 flex flex-col justify-center py-20 pointer-events-auto">
+                <span class="font-mono text-accentPurp text-xs md:text-sm tracking-[0.3em] uppercase block mb-3">
+                    // Welcome to my space
+                </span>
+                <span class="text-gray-400 font-light text-lg md:text-2xl mb-1">Hello! I'm</span>
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tight text-white leading-none mb-1">
+                    PHILIPP
+                </h1>
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-400 to-accentPurp leading-none mb-6">
+                    DACHTLER
+                </h1>
+                <div class="w-20 h-[2px] bg-gradient-to-r from-accentPurp to-transparent mb-6"></div>
+            </div>
+
+            <!-- Right Text Block -->
+            <div class="w-full md:w-1/2 flex flex-col justify-center items-end text-right py-20 pointer-events-auto self-end md:self-center">
+                <span class="text-gray-400 font-light text-lg md:text-2xl mb-1">An</span>
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-accentPurp to-accentPink text-glow leading-tight">
+                    AI ENGINEER
+                </h2>
+                <h3 class="text-xl md:text-2xl font-mono text-gray-300 tracking-wider mt-2">
+                    & FULL-STACK DEVELOPER
+                </h3>
+                <p class="text-xs md:text-sm text-gray-500 max-w-sm mt-4 font-mono">
+                    Designing advanced interactive systems, smooth WebGL scenes, and production-ready intelligence solutions.
+                </p>
+                <!-- Resume Link -->
+                <a href="#" class="mt-8 group flex items-center space-x-3 text-xs tracking-[0.3em] font-mono text-gray-400 hover:text-white transition-all duration-300">
+                    <span>RESUME</span>
+                    <div class="w-8 h-8 rounded-full border border-white/10 group-hover:border-accentPurp flex items-center justify-center transition-all duration-300">
+                        <i class="fa-regular fa-file-pdf text-xs group-hover:text-accentPurp"></i>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Section 2: Interactive Work / About Experience (Scroll triggered) -->
+        <section id="about" class="relative min-h-[300vh] px-6 md:px-20 lg:px-32 z-30">
+            <!-- Sidebar Indicator background block -->
+            <div class="sticky top-1/4 left-0 w-full md:w-1/3 pointer-events-none mb-12 md:mb-0">
+                <span class="font-mono text-accentPurp text-xs tracking-[0.4em] uppercase block mb-2">
+                    // WHAT I DO
+                </span>
+                <h2 class="text-4xl md:text-6xl font-extrabold text-white tracking-tight">
+                    TECHSTACK &<br/>SERVICES
+                </h2>
+                <div class="w-16 h-1 bg-accentPurp mt-4"></div>
+                <p class="text-gray-500 font-mono text-xs mt-4 max-w-xs hidden md:block">
+                    Scroll down to explore how my workspace reveals more advanced features and deeper technical capabilities.
+                </p>
+            </div>
+
+            <!-- Content Cards shifting vertically on scroll on the Right side -->
+            <div class="w-full md:w-[45%] ml-auto space-y-[40vh] py-[20vh]">
+                
+                <!-- Card 1 -->
+                <div class="card-trigger border border-dashed border-white/10 bg-darkBg/60 backdrop-blur-md p-8 rounded-lg relative transition-all duration-500 hover:border-accentPurp/40 group">
+                    <!-- Corner Marks like camera focus framing -->
+                    <div class="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-accentPurp/30 group-hover:border-accentPurp transition-all"></div>
+                    <div class="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-accentPurp/30 group-hover:border-accentPurp transition-all"></div>
+                    <div class="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-accentPurp/30 group-hover:border-accentPurp transition-all"></div>
+                    <div class="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-accentPurp/30 group-hover:border-accentPurp transition-all"></div>
+                    
+                    <span class="font-mono text-accentPurp text-xs tracking-widest block mb-1">SERVICES 01</span>
+                    <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-accentPink transition-colors">AI DEVELOPER</h3>
+                    <p class="text-xs text-gray-400 font-mono mb-4">Building intelligent systems & AI solutions</p>
+                    <p class="text-gray-300 text-sm leading-relaxed mb-6">
+                        Developing customized AI agents, chatbots, workflow automations, and intelligent machine learning setups. Fluent in Python, LLM frameworks, vector databases, and modern NLP.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2 py-1 bg-purple-950/40 border border-purple-500/20 text-accentPink font-mono text-[10px] rounded">LangChain</span>
+                        <span class="px-2 py-1 bg-purple-950/40 border border-purple-500/20 text-accentPink font-mono text-[10px] rounded">OpenAI API</span>
+                        <span class="px-2 py-1 bg-purple-950/40 border border-purple-500/20 text-accentPink font-mono text-[10px] rounded">Python</span>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="card-trigger border border-dashed border-white/10 bg-darkBg/60 backdrop-blur-md p-8 rounded-lg relative transition-all duration-500 hover:border-accentPurp/40 group">
+                    <div class="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-accentPurp/30 group-hover:border-accentPurp transition-all"></div>
+                    <div class="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-accentPurp/30 group-hover:border-accentPurp transition-all"></div>
+                    <div class="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-accentPurp/30 group-hover:border-accentPurp transition-all"></div>
+                    <div class="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-accentPurp/30 group-hover:border-accentPurp transition-all"></div>
+                    
+                    <span class="font-mono text-accentPurp text-xs tracking-widest block mb-1">SERVICES 02</span>
+                    <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-accentPink transition-colors">FULL-STACK</h3>
+                    <p class="text-xs text-gray-400 font-mono mb-4">Modern web development & scalable apps</p>
+                    <p class="text-gray-300 text-sm leading-relaxed mb-6">
+                        Crafting exceptionally fast, highly interactive web applications optimized for SEO and conversion. Expert inside the React, Next.js, Node.js, and TypeScript ecosystem.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2 py-1 bg-purple-950/40 border border-purple-500/20 text-accentPink font-mono text-[10px] rounded">React / NextJS</span>
+                        <span class="px-2 py-1 bg-purple-950/40 border border-purple-500/20 text-accentPink font-mono text-[10px] rounded">TypeScript</span>
+                        <span class="px-2 py-1 bg-purple-950/40 border border-purple-500/20 text-accentPink font-mono text-[10px] rounded">TailwindCSS</span>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="card-trigger border border-dashed border-white/10 bg-darkBg/60 backdrop-blur-md p-8 rounded-lg relative transition-all duration-500 hover:border-accentPurp/40 group">
+                    <div class="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-accentPurp/30 group-hover:border-accentPurp transition-all"></div>
+                    <div class="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-accentPurp/30 group-hover:border-accentPurp transition-all"></div>
+                    <div class="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-accentPurp/30 group-hover:border-accentPurp transition-all"></div>
+                    <div class="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-accentPurp/30 group-hover:border-accentPurp transition-all"></div>
+                    
+                    <span class="font-mono text-accentPurp text-xs tracking-widest block mb-1">SERVICES 03</span>
+                    <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-accentPink transition-colors">AUTOMATION</h3>
+                    <p class="text-xs text-gray-400 font-mono mb-4">Process optimization with smart tools</p>
+                    <p class="text-gray-300 text-sm leading-relaxed mb-6">
+                        Saving countless hours of manual work by linking services, integrating webhooks, and structuring automated data synchronization workflows across cloud products.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2 py-1 bg-purple-950/40 border border-purple-500/20 text-accentPink font-mono text-[10px] rounded">N8N / Make</span>
+                        <span class="px-2 py-1 bg-purple-950/40 border border-purple-500/20 text-accentPink font-mono text-[10px] rounded">APIs</span>
+                        <span class="px-2 py-1 bg-purple-950/40 border border-purple-500/20 text-accentPink font-mono text-[10px] rounded">CronJobs</span>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="card-trigger border border-dashed border-white/10 bg-darkBg/60 backdrop-blur-md p-8 rounded-lg relative transition-all duration-500 hover:border-accentPurp/40 group">
+                    <div class="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-accentPurp/30 group-hover:border-accentPurp transition-all"></div>
+                    <div class="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-accentPurp/30 group-hover:border-accentPurp transition-all"></div>
+                    <div class="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-accentPurp/30 group-hover:border-accentPurp transition-all"></div>
+                    <div class="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-accentPurp/30 group-hover:border-accentPurp transition-all"></div>
+                    
+                    <span class="font-mono text-accentPurp text-xs tracking-widest block mb-1">SERVICES 04</span>
+                    <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-accentPink transition-colors">3D WEB & INTERACTIVES</h3>
+                    <p class="text-xs text-gray-400 font-mono mb-4">High end visual storytelling online</p>
+                    <p class="text-gray-300 text-sm leading-relaxed mb-6">
+                        Bringing products alive directly inside the web browser. Implementing fast, responsive WebGL architectures using Three.js and shader programming for ultimate user retention.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2 py-1 bg-purple-950/40 border border-purple-500/20 text-accentPink font-mono text-[10px] rounded">ThreeJS</span>
+                        <span class="px-2 py-1 bg-purple-950/40 border border-purple-500/20 text-accentPink font-mono text-[10px] rounded">Shaders</span>
+                        <span class="px-2 py-1 bg-purple-950/40 border border-purple-500/20 text-accentPink font-mono text-[10px] rounded">GSAP</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Section 3: Contact Arena -->
+        <section id="contact" class="relative min-h-screen px-6 md:px-20 lg:px-32 py-24 z-30 flex flex-col justify-center bg-darkBg/95">
+            <div class="max-w-4xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                
+                <!-- Left side Info -->
+                <div>
+                    <span class="font-mono text-accentPurp text-xs tracking-[0.3em] uppercase block mb-2">
+                        // SECURE AN ALLY
+                    </span>
+                    <h2 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight leading-none mb-6">
+                        LET'S BUILD SOMETHING GREAT
+                    </h2>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-8">
+                        Do you want to develop an interactive website, implement custom AI pipelines, or build outstanding automation? Drop me a line directly. I am usually replying within 24 hours.
+                    </p>
+                    <div class="space-y-4 font-mono text-xs text-gray-400">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-location-dot text-accentPurp w-4"></i>
+                            <span>Germany, EU (GMT+2)</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-envelope text-accentPurp w-4"></i>
+                            <span>hello@philippdachtler.com</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-globe text-accentPurp w-4"></i>
+                            <span>www.philippdachtler.com</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Form Card -->
+                <div class="border border-white/10 bg-white/[0.02] backdrop-blur-md p-8 rounded-xl relative">
+                    <div id="contactFormStatus" class="hidden absolute inset-0 bg-darkBg/95 rounded-xl flex flex-col items-center justify-center p-6 text-center z-20">
+                        <div class="w-16 h-16 rounded-full border border-accentPurp flex items-center justify-center mb-4 text-accentPurp animate-pulse">
+                            <i class="fa-solid fa-paper-plane text-2xl"></i>
+                        </div>
+                        <h4 class="text-white text-lg font-bold mb-2">MESSAGE SENT SUCCESSFULLY!</h4>
+                        <p class="text-gray-400 text-xs font-mono max-w-xs">Thank you, Philipp will get back to you shortly.</p>
+                        <button onclick="resetContactForm()" class="mt-6 px-4 py-2 border border-white/10 text-white font-mono text-xs hover:border-accentPurp transition-colors rounded">Send Another</button>
+                    </div>
+
+                    <form id="portfolioContactForm" onsubmit="handleContactSubmit(event)" class="space-y-6">
+                        <div>
+                            <label class="block text-[10px] font-mono tracking-widest text-gray-400 uppercase mb-2">Your Name</label>
+                            <input type="text" required placeholder="John Doe" class="w-full bg-white/[0.03] border border-white/10 rounded px-4 py-3 text-sm text-white focus:outline-none focus:border-accentPurp transition-colors font-mono">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-mono tracking-widest text-gray-400 uppercase mb-2">Your Email</label>
+                            <input type="email" required placeholder="john@example.com" class="w-full bg-white/[0.03] border border-white/10 rounded px-4 py-3 text-sm text-white focus:outline-none focus:border-accentPurp transition-colors font-mono">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-mono tracking-widest text-gray-400 uppercase mb-2">Your Message</label>
+                            <textarea required rows="4" placeholder="Let's talk about the project..." class="w-full bg-white/[0.03] border border-white/10 rounded px-4 py-3 text-sm text-white focus:outline-none focus:border-accentPurp transition-colors font-mono resize-none"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-gradient-to-r from-accentPurp to-accentPink hover:from-purple-600 hover:to-pink-500 text-white font-mono text-xs tracking-widest py-4 rounded font-bold uppercase transition-all shadow-lg hover:shadow-purple-500/20 relative overflow-hidden group">
+                            <span class="relative z-10">TRANSMIT MESSAGE</span>
+                            <div class="absolute inset-0 bg-white/20 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Minimalist Footer -->
+        <footer class="relative z-30 py-8 border-t border-white/5 bg-darkBg text-center text-xs text-gray-500 font-mono">
+            <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div>&copy; 2026 Philipp Dachtler. All Rights Reserved.</div>
+                <div class="flex space-x-6">
+                    <a href="#" class="hover:text-accentPurp transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-accentPurp transition-colors">Imprint</a>
+                </div>
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- JavaScript code for 3D engine, Head-Tracking, GSAP triggers, and responsiveness -->
+    <script>
+        // Set up GSAP ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+
+        // --- 3D Scene Initialization ---
+        const canvas = document.getElementById('canvas3d');
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.1;
+
+        const scene = new THREE.Scene();
+
+        // Responsive Camera setup
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+        // Default initial camera values (zoomed in near head)
+        camera.position.set(0, 0.8, 3); 
+        scene.add(camera);
+
+        // --- Lights ---
+        // Ambient soft illumination
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.35);
+        scene.add(ambientLight);
+
+        // Directional main white light
+        const mainLight = new THREE.DirectionalLight(0xffffff, 1.4);
+        mainLight.position.set(5, 5, 5);
+        scene.add(mainLight);
+
+        // Neon Pink/Purple backlight (Glow edges on character)
+        const pinkLight = new THREE.DirectionalLight(0xf0abfc, 3.2);
+        pinkLight.position.set(-5, 3, -4);
+        scene.add(pinkLight);
+
+        // Soft fill light from underneath
+        const blueLight = new THREE.DirectionalLight(0xa855f7, 2.0);
+        blueLight.position.set(3, -3, 3);
+        scene.add(blueLight);
+
+        // --- Setup Character and Props ---
+        // Create a root group that keeps the entire setup centered
+        const workspaceGroup = new THREE.Group();
+        scene.add(workspaceGroup);
+        workspaceGroup.position.set(0, -0.6, 0);
+
+        // PREMIUM MATERIALS
+        // Pure elegant white mannequin porcelain material
+        const whiteMannequinMaterial = new THREE.MeshStandardMaterial({
+            color: 0xffffff,
+            roughness: 0.35,
+            metalness: 0.08,
+            bumpScale: 0.05
+        });
+
+        // Rich, warm brown hair clay material (sculpted look)
+        const brownHairMaterial = new THREE.MeshStandardMaterial({
+            color: 0x422617, // Natural aesthetic brown
+            roughness: 0.65,
+            metalness: 0.05
+        });
+
+        const deskMaterial = new THREE.MeshStandardMaterial({
+            color: 0x181825,
+            roughness: 0.4,
+            metalness: 0.1
+        });
+
+        const techMaterial = new THREE.MeshStandardMaterial({
+            color: 0x1e1e2e,
+            roughness: 0.4,
+            metalness: 0.2
+        });
+
+        const accentMaterial = new THREE.MeshStandardMaterial({
+            color: 0xa855f7, // Accent purple glow style
+            emissive: 0xa855f7,
+            emissiveIntensity: 0.5,
+            roughness: 0.1
+        });
+
+        // 1. Fully-Posed Mannequin Character (Organic Human Shape)
+        const characterGroup = new THREE.Group();
+        workspaceGroup.add(characterGroup);
+
+        // Sub-group for human body structure
+        const bodyGroup = new THREE.Group();
+        characterGroup.add(bodyGroup);
+
+        // Sculpting Pelvis/Hips
+        const pelvisGeo = new THREE.SphereGeometry(0.22, 32, 16);
+        const pelvis = new THREE.Mesh(pelvisGeo, whiteMannequinMaterial);
+        pelvis.scale.set(1.15, 0.75, 1);
+        pelvis.position.set(0, 0.25, -0.05);
+        bodyGroup.add(pelvis);
+
+        // Sculpting Torso / Curvaceous spine
+        const lowerTorsoGeo = new THREE.CylinderGeometry(0.18, 0.21, 0.22, 32);
+        const lowerTorso = new THREE.Mesh(lowerTorsoGeo, whiteMannequinMaterial);
+        lowerTorso.position.set(0, 0.38, -0.04);
+        bodyGroup.add(lowerTorso);
+
+        // Chest / Elegant ribcage representation
+        const chestGeo = new THREE.SphereGeometry(0.25, 32, 16);
+        const chest = new THREE.Mesh(chestGeo, whiteMannequinMaterial);
+        chest.scale.set(1.1, 1.25, 0.9);
+        chest.position.set(0, 0.58, -0.02);
+        bodyGroup.add(chest);
+
+        // Neck Column
+        const neckGeo = new THREE.CylinderGeometry(0.08, 0.09, 0.18, 32);
+        const neck = new THREE.Mesh(neckGeo, whiteMannequinMaterial);
+        neck.position.set(0, 0.76, -0.01);
+        bodyGroup.add(neck);
+
+        // Head Tracking Group
+        const headGroup = new THREE.Group();
+        headGroup.position.set(0, 0.95, -0.01);
+        bodyGroup.add(headGroup);
+
+        // Sculpting a real-shaped human face/head (Spherical crown blended with tapered jaw)
+        const skullGeo = new THREE.SphereGeometry(0.18, 32, 32);
+        const skull = new THREE.Mesh(skullGeo, whiteMannequinMaterial);
+        skull.position.set(0, 0.08, 0);
+        headGroup.add(skull);
+
+        // Elegant jawline structure
+        const jawGeo = new THREE.CylinderGeometry(0.14, 0.07, 0.16, 32);
+        const jaw = new THREE.Mesh(jawGeo, whiteMannequinMaterial);
+        jaw.position.set(0, -0.02, 0.04);
+        jaw.rotation.x = 0.35; // Angle human jawline forward
+        headGroup.add(jaw);
+
+        // Beautiful, slender nose bridge
+        const noseGeo = new THREE.ConeGeometry(0.025, 0.09, 4);
+        const nose = new THREE.Mesh(noseGeo, whiteMannequinMaterial);
+        nose.position.set(0, 0.03, 0.18);
+        nose.rotation.x = 0.25;
+        headGroup.add(nose);
+
+        // Sculpting Elegant Human Ears
+        const earLGeo = new THREE.SphereGeometry(0.035, 16, 16);
+        const earL = new THREE.Mesh(earLGeo, whiteMannequinMaterial);
+        earL.scale.set(0.6, 1.1, 0.4);
+        earL.position.set(-0.17, 0.06, -0.01);
+        earL.rotation.y = 0.2;
+        const earR = earL.clone();
+        earR.position.x = 0.17;
+        earR.rotation.y = -0.2;
+        headGroup.add(earL, earR);
+
+        // Elegant organic layered brown hair clumps on top of the head
+        const hairBaseGeo = new THREE.SphereGeometry(0.19, 32, 16);
+        const hairBase = new THREE.Mesh(hairBaseGeo, brownHairMaterial);
+        hairBase.scale.set(1.04, 1.05, 1.08);
+        hairBase.position.set(0, 0.1, -0.02);
+        headGroup.add(hairBase);
+
+        // Layered Hair locks/tufts to create realistic brown volume and fringe
+        const hairTufts = [
+            { size: [0.08, 0.08, 0.14], pos: [0.0, 0.22, 0.08], rot: [0.3, 0, 0] },     // Crest top
+            { size: [0.06, 0.06, 0.15], pos: [0.07, 0.2, 0.11], rot: [0.2, 0.2, -0.1] }, // Right sweep fringe
+            { size: [0.07, 0.06, 0.14], pos: [-0.07, 0.21, 0.1], rot: [0.2, -0.2, 0.1] }, // Left sweep fringe
+            { size: [0.05, 0.07, 0.11], pos: [-0.14, 0.11, 0.08], rot: [0, 0, 0.4] },   // Left temple line
+            { size: [0.05, 0.07, 0.11], pos: [0.14, 0.11, 0.08], rot: [0, 0, -0.4] },    // Right temple line
+            { size: [0.07, 0.08, 0.15], pos: [0.0, 0.25, -0.08], rot: [-0.3, 0, 0] },   // Crown volume back
+            { size: [0.08, 0.07, 0.11], pos: [-0.08, 0.24, -0.04], rot: [-0.1, -0.3, 0.2] }, // Left top crown
+            { size: [0.08, 0.07, 0.11], pos: [0.08, 0.24, -0.04], rot: [-0.1, 0.3, -0.2] }  // Right top crown
+        ];
+
+        hairTufts.forEach(t => {
+            const lockGeo = new THREE.SphereGeometry(1, 16, 16);
+            const lock = new THREE.Mesh(lockGeo, brownHairMaterial);
+            lock.scale.set(t.size[0], t.size[1], t.size[2]);
+            lock.position.set(t.pos[0], t.pos[1], t.pos[2]);
+            lock.rotation.set(t.rot[0], t.rot[1], t.rot[2]);
+            headGroup.add(lock);
+        });
+
+        // Eyes / Glasses (Sleek sci-fi neon visor wrapped on face)
+        const eyesGroup = new THREE.Group();
+        eyesGroup.position.set(0, 0.05, 0.15); 
+        headGroup.add(eyesGroup);
+
+        const frameGeo = new THREE.BoxGeometry(0.32, 0.05, 0.06);
+        const frame = new THREE.Mesh(frameGeo, accentMaterial);
+        frame.position.set(0, 0.02, 0.02);
+        eyesGroup.add(frame);
+
+        const eyeLSlit = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.015, 0.01), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+        eyeLSlit.position.set(-0.07, 0.025, 0.055);
+        const eyeRSlit = eyeLSlit.clone();
+        eyeRSlit.position.set(0.07, 0.025, 0.055);
+        eyesGroup.add(eyeLSlit, eyeRSlit);
+
+        // Left Human Arm with realistic shoulder joint, elbow bend and hands resting near laptop
+        const armLGroup = new THREE.Group();
+        armLGroup.position.set(-0.3, 0.64, -0.02);
+        bodyGroup.add(armLGroup);
+
+        const shoulderL = new THREE.Mesh(new THREE.SphereGeometry(0.075, 16, 16), whiteMannequinMaterial);
+        armLGroup.add(shoulderL);
+
+        // Left upper arm capsule
+        const bicepL = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.048, 0.36, 16), whiteMannequinMaterial);
+        bicepL.position.set(-0.1, -0.14, 0.1);
+        bicepL.rotation.set(-0.5, 0, 0.35);
+        armLGroup.add(bicepL);
+
+        // Left elbow joint
+        const elbowL = new THREE.Mesh(new THREE.SphereGeometry(0.046, 16, 16), whiteMannequinMaterial);
+        elbowL.position.set(-0.19, -0.28, 0.22);
+        armLGroup.add(elbowL);
+
+        // Left forearm pointing toward workspace laptop
+        const forearmL = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.038, 0.32, 16), whiteMannequinMaterial);
+        forearmL.position.set(-0.16, -0.32, 0.38);
+        forearmL.rotation.set(1.0, 0.1, -0.15);
+        armLGroup.add(forearmL);
+
+        // Left hand (Mannequin palms with small organic finger spheres resting over desk keys)
+        const handLGroup = new THREE.Group();
+        handLGroup.position.set(-0.12, -0.34, 0.54);
+        armLGroup.add(handLGroup);
+
+        const palmL = new THREE.Mesh(new THREE.SphereGeometry(0.04, 16, 16), whiteMannequinMaterial);
+        palmL.scale.set(1.2, 0.6, 1.3);
+        handLGroup.add(palmL);
+
+        // Add 5 elegant tiny white fingers
+        for (let i = 0; i < 5; i++) {
+            const finger = new THREE.Mesh(new THREE.CylinderGeometry(0.007, 0.005, 0.045, 8), whiteMannequinMaterial);
+            finger.position.set(-0.025 + i * 0.0125, -0.015, 0.038);
+            finger.rotation.set(0.4, 0, -0.1 + i * 0.05);
+            handLGroup.add(finger);
+        }
+
+        // Right Human Arm mirroring the organic pose
+        const armRGroup = new THREE.Group();
+        armRGroup.position.set(0.3, 0.64, -0.02);
+        bodyGroup.add(armRGroup);
+
+        const shoulderR = new THREE.Mesh(new THREE.SphereGeometry(0.075, 16, 16), whiteMannequinMaterial);
+        armRGroup.add(shoulderR);
+
+        // Right upper arm capsule
+        const bicepR = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.048, 0.36, 16), whiteMannequinMaterial);
+        bicepR.position.set(0.1, -0.14, 0.1);
+        bicepR.rotation.set(-0.5, 0, -0.35);
+        armRGroup.add(bicepR);
+
+        // Right elbow joint
+        const elbowR = new THREE.Mesh(new THREE.SphereGeometry(0.046, 16, 16), whiteMannequinMaterial);
+        elbowR.position.set(0.19, -0.28, 0.22);
+        armRGroup.add(elbowR);
+
+        // Right forearm pointing toward desk laptop
+        const forearmR = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.038, 0.32, 16), whiteMannequinMaterial);
+        forearmR.position.set(0.16, -0.32, 0.38);
+        forearmR.rotation.set(1.0, -0.1, 0.15);
+        armRGroup.add(forearmR);
+
+        // Right hand
+        const handRGroup = new THREE.Group();
+        handRGroup.position.set(0.12, -0.34, 0.54);
+        armRGroup.add(handRGroup);
+
+        const palmR = new THREE.Mesh(new THREE.SphereGeometry(0.04, 16, 16), whiteMannequinMaterial);
+        palmR.scale.set(1.2, 0.6, 1.3);
+        handRGroup.add(palmR);
+
+        // Add 5 elegant tiny right white fingers
+        for (let i = 0; i < 5; i++) {
+            const finger = new THREE.Mesh(new THREE.CylinderGeometry(0.007, 0.005, 0.045, 8), whiteMannequinMaterial);
+            finger.position.set(-0.025 + i * 0.0125, -0.015, 0.038);
+            finger.rotation.set(0.4, 0, -0.1 + i * 0.05);
+            handRGroup.add(finger);
+        }
+
+        // Posed Sitting Legs (under desk)
+        const leftLegGroup = new THREE.Group();
+        leftLegGroup.position.set(-0.12, 0.22, 0.0);
+        bodyGroup.add(leftLegGroup);
+
+        const thighL = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.065, 0.44, 16), whiteMannequinMaterial);
+        thighL.position.set(0, 0, 0.2);
+        thighL.rotation.set(Math.PI / 2 - 0.2, 0, 0.1);
+        leftLegGroup.add(thighL);
+
+        const kneeL = new THREE.Mesh(new THREE.SphereGeometry(0.06, 16, 16), whiteMannequinMaterial);
+        kneeL.position.set(0.02, 0.05, 0.42);
+        leftLegGroup.add(kneeL);
+
+        const shinL = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.04, 0.48, 16), whiteMannequinMaterial);
+        shinL.position.set(0.02, -0.2, 0.44);
+        shinL.rotation.set(0.15, 0, 0);
+        leftLegGroup.add(shinL);
+
+        // Mirror Right leg
+        const rightLegGroup = new THREE.Group();
+        rightLegGroup.position.set(0.12, 0.22, 0.0);
+        bodyGroup.add(rightLegGroup);
+
+        const thighR = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.065, 0.44, 16), whiteMannequinMaterial);
+        thighR.position.set(0, 0, 0.2);
+        thighR.rotation.set(Math.PI / 2 - 0.2, 0, -0.1);
+        rightLegGroup.add(thighR);
+
+        const kneeR = new THREE.Mesh(new THREE.SphereGeometry(0.06, 16, 16), whiteMannequinMaterial);
+        kneeR.position.set(-0.02, 0.05, 0.42);
+        rightLegGroup.add(kneeR);
+
+        const shinR = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.04, 0.48, 16), whiteMannequinMaterial);
+        shinR.position.set(-0.02, -0.2, 0.44);
+        shinR.rotation.set(0.15, 0, 0);
+        rightLegGroup.add(shinR);
+
+        // Modern Office Chair Backrest & Base Support
+        const chairGroup = new THREE.Group();
+        characterGroup.add(chairGroup);
+
+        const chairBackGeo = new THREE.BoxGeometry(0.68, 0.85, 0.08);
+        const chairBack = new THREE.Mesh(chairBackGeo, techMaterial);
+        chairBack.position.set(0, 0.65, -0.32);
+        chairBack.rotation.x = -0.06;
+        chairGroup.add(chairBack);
+
+        const chairSupportGeo = new THREE.CylinderGeometry(0.035, 0.035, 0.5, 16);
+        const chairSupport = new THREE.Mesh(chairSupportGeo, techMaterial);
+        chairSupport.position.set(0, 0.0, -0.25);
+        chairGroup.add(chairSupport);
+
+        // 2. Workspace Desk & Props (Slowly visible when camera zooms back)
+        const deskGroup = new THREE.Group();
+        workspaceGroup.add(deskGroup);
+
+        // Minimalist desk plate
+        const deskPlateGeo = new THREE.BoxGeometry(1.8, 0.05, 0.9);
+        const deskPlate = new THREE.Mesh(deskPlateGeo, deskMaterial);
+        deskPlate.position.set(0, 0.1, 0.4);
+        deskGroup.add(deskPlate);
+
+        // Desk legs
+        const legGeo = new THREE.CylinderGeometry(0.03, 0.03, 0.7, 16);
+        const legFL = new THREE.Mesh(legGeo, techMaterial);
+        legFL.position.set(-0.85, -0.25, 0.8);
+        const legFR = legFL.clone();
+        legFR.position.set(0.85, -0.25, 0.8);
+        const legBL = legFL.clone();
+        legBL.position.set(-0.85, -0.25, 0.1);
+        const legBR = legFL.clone();
+        legBR.position.set(0.85, -0.25, 0.1);
+        deskGroup.add(legFL, legFR, legBL, legBR);
+
+        // Glowing Laptop
+        const laptopGroup = new THREE.Group();
+        laptopGroup.position.set(0, 0.125, 0.45);
+        deskGroup.add(laptopGroup);
+
+        // Laptop Base
+        const laptopBaseGeo = new THREE.BoxGeometry(0.4, 0.015, 0.28);
+        const laptopBase = new THREE.Mesh(laptopBaseGeo, techMaterial);
+        laptopGroup.add(laptopBase);
+
+        // Laptop Screen (Open at 110 degrees)
+        const laptopScreenGroup = new THREE.Group();
+        laptopScreenGroup.position.set(0, 0.005, -0.13);
+        laptopScreenGroup.rotation.x = -Math.PI / 3;
+        laptopGroup.add(laptopScreenGroup);
+
+        const laptopScreenBackGeo = new THREE.BoxGeometry(0.4, 0.28, 0.012);
+        const laptopScreenBack = new THREE.Mesh(laptopScreenBackGeo, techMaterial);
+        laptopScreenBack.position.set(0, 0.14, -0.006);
+        laptopScreenGroup.add(laptopScreenBack);
+
+        // Emissive Screen Glow
+        const laptopDisplayGeo = new THREE.PlaneGeometry(0.38, 0.26);
+        const displayMaterial = new THREE.MeshStandardMaterial({
+            color: 0xc084fc,
+            emissive: 0xc084fc,
+            emissiveIntensity: 4.5,
+            side: THREE.DoubleSide
+        });
+        const laptopDisplay = new THREE.Mesh(laptopDisplayGeo, displayMaterial);
+        laptopDisplay.position.set(0, 0.14, 0.002);
+        laptopScreenGroup.add(laptopDisplay);
+
+        // Keyboard plate (glowing details)
+        const keyboardGlowGeo = new THREE.BoxGeometry(0.32, 0.005, 0.12);
+        const keyboardGlow = new THREE.Mesh(keyboardGlowGeo, accentMaterial);
+        keyboardGlow.position.set(0, 0.01, 0.02);
+        laptopGroup.add(keyboardGlow);
+
+        // Workspace mug / cup
+        const mugGeo = new THREE.CylinderGeometry(0.045, 0.045, 0.12, 16);
+        const mug = new THREE.Mesh(mugGeo, whiteMannequinMaterial);
+        mug.position.set(0.45, 0.18, 0.45);
+        deskGroup.add(mug);
+
+        // Minimalist secondary side monitor (floating feel)
+        const sideMonitorGroup = new THREE.Group();
+        sideMonitorGroup.position.set(-0.65, 0.4, 0.4);
+        sideMonitorGroup.rotation.y = Math.PI / 6;
+        deskGroup.add(sideMonitorGroup);
+
+        // Monitor screen back
+        const monBackGeo = new THREE.BoxGeometry(0.4, 0.28, 0.015);
+        const monBack = new THREE.Mesh(monBackGeo, techMaterial);
+        sideMonitorGroup.add(monBack);
+
+        // Monitor stand
+        const monStandGeo = new THREE.CylinderGeometry(0.015, 0.015, 0.2, 16);
+        const monStand = new THREE.Mesh(monStandGeo, techMaterial);
+        monStand.position.set(0, -0.2, 0);
+        sideMonitorGroup.add(monStand);
+
+        // Monitor Display Purple Glow
+        const monDisplayGeo = new THREE.PlaneGeometry(0.38, 0.26);
+        const monDisplay = new THREE.Mesh(monDisplayGeo, displayMaterial);
+        monDisplay.position.set(0, 0, 0.009);
+        sideMonitorGroup.add(monDisplay);
+
+
+        // --- Interaction Logic (Mouse coordinates normalized) ---
+        const mouse = { x: 0, y: 0 };
+        const targetMouse = { x: 0, y: 0 };
+        let isMobile = window.innerWidth < 768;
+
+        // Mouse move listener
+        window.addEventListener('mousemove', (event) => {
+            if (!isMobile) {
+                // Map coordinates from -1 to 1
+                targetMouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+                targetMouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            }
+        });
+
+        // Touch handling fallback (subtle movement on tap/drag)
+        window.addEventListener('touchmove', (event) => {
+            if (event.touches.length > 0) {
+                const touch = event.touches[0];
+                targetMouse.x = (touch.clientX / window.innerWidth) * 2 - 1;
+                targetMouse.y = -(touch.clientY / window.innerHeight) * 2 + 1;
+            }
+        }, { passive: true });
+
+
+        // --- GSAP ScrollTrigger Camera Zoom Flight ---
+        // Dynamically calculates parameters for zoom out during scroll experience
+        const cameraTimeline = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#about",
+                start: "top bottom",
+                end: "bottom bottom",
+                scrub: 1, // Smooth interaction
+                invalidateOnRefresh: true
+            }
+        });
+
+        // Camera flight parameters based on scroll progress
+        cameraTimeline.to(camera.position, {
+            y: 0.25,
+            z: isMobile ? 5.8 : 4.2, // Zoom back further on smaller screens to keep workspace inside bounding box
+            ease: "none"
+        }, 0);
+
+        // Adjust rotation slightly during scroll
+        cameraTimeline.to(camera.rotation, {
+            x: -0.06,
+            ease: "none"
+        }, 0);
+
+        // Slow parallax horizontal rotation on scroll
+        cameraTimeline.to(workspaceGroup.rotation, {
+            y: -Math.PI / 10,
+            ease: "none"
+        }, 0);
+
+
+        // --- Animation Loop ---
+        const clock = new THREE.Clock();
+
+        const animate = () => {
+            requestAnimationFrame(animate);
+
+            const elapsedTime = clock.getElapsedTime();
+
+            // Smooth interpolation (lerp) for cursor tracking
+            mouse.x = THREE.MathUtils.lerp(mouse.x, targetMouse.x, 0.07);
+            mouse.y = THREE.MathUtils.lerp(mouse.y, targetMouse.y, 0.07);
+
+            if (!isMobile) {
+                // Tracking coordinates applied to Head
+                headGroup.rotation.y = mouse.x * 0.35; // Head yaw rotation limit
+                headGroup.rotation.x = -mouse.y * 0.20; // Head pitch rotation limit
+
+                // Tracking coordinates applied to Eyes
+                eyesGroup.rotation.y = mouse.x * 0.45;
+                eyesGroup.rotation.x = -mouse.y * 0.25;
+            } else {
+                // Idle Sinus animation for touch devices or low interactive experiences
+                const idleWave = Math.sin(elapsedTime * 1.5) * 0.12;
+                headGroup.rotation.y = idleWave;
+                headGroup.rotation.x = Math.cos(elapsedTime * 1.0) * 0.06;
+                eyesGroup.rotation.y = idleWave * 1.2;
+            }
+
+            // Subtle desk elements breathing floating effect
+            laptopGroup.position.y = 0.125 + Math.sin(elapsedTime * 2.0) * 0.004;
+            sideMonitorGroup.position.y = 0.4 + Math.sin(elapsedTime * 1.8 + 1.0) * 0.008;
+
+            renderer.render(scene, camera);
+        };
+
+        // Window load and start animation loop
+        window.onload = function() {
+            animate();
+        };
+
+
+        // --- Responsiveness Resize Adjustments ---
+        window.addEventListener('resize', () => {
+            isMobile = window.innerWidth < 768;
+
+            // Camera update
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+
+            // Renderer update
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            // Position adjustments based on screensize
+            if (isMobile) {
+                workspaceGroup.position.set(0, -0.3, 0);
+                workspaceGroup.scale.set(0.85, 0.85, 0.85);
+            } else {
+                workspaceGroup.position.set(0, -0.6, 0);
+                workspaceGroup.scale.set(1.1, 1.1, 1.1);
+            }
+        });
+
+        // Trigger initial responsive setup check
+        if (isMobile) {
+            workspaceGroup.position.set(0, -0.3, 0);
+            workspaceGroup.scale.set(0.85, 0.85, 0.85);
+        } else {
+            workspaceGroup.position.set(0, -0.6, 0);
+            workspaceGroup.scale.set(1.1, 1.1, 1.1);
+        }
+
+
+        // --- Card triggers highlight states matching scroll position ---
+        document.querySelectorAll('.card-trigger').forEach((card) => {
+            gsap.fromTo(card, 
+                { opacity: 0.35, y: 50, scale: 0.95 }, 
+                {
+                    opacity: 1, 
+                    y: 0, 
+                    scale: 1,
+                    duration: 0.8,
+                    scrollTrigger: {
+                        trigger: card,
+                        start: "top 80%",
+                        end: "bottom 30%",
+                        toggleActions: "play reverse play reverse"
+                    }
+                }
+            );
+        });
+
+
+        // --- Contact Form Actions ---
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            const inputs = event.target.querySelectorAll('input, textarea');
+            inputs.forEach(input => input.disabled = true);
+            
+            // Show status screen overlay instantly
+            const statusBox = document.getElementById('contactFormStatus');
+            statusBox.classList.remove('hidden');
+            statusBox.classList.add('flex');
+            
+            // Send direct request to our Gemini environment backend structure for mail or custom responses
+            // This represents a premium clean transaction handling
+            event.target.reset();
+        }
+
+        function resetContactForm() {
+            const statusBox = document.getElementById('contactFormStatus');
+            statusBox.classList.add('hidden');
+            statusBox.classList.remove('flex');
+            
+            const form = document.getElementById('portfolioContactForm');
+            const inputs = form.querySelectorAll('input, textarea');
+            inputs.forEach(input => input.disabled = false);
+        }
+    </script>
+</body>
+</html>
